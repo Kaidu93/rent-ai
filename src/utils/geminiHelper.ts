@@ -12,7 +12,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 export async function chatToGemini(userMessage: string, history: ChatHistory, settings: ChatSettings): Promise<string> {
     const model = genAI.getGenerativeModel({
         model: settings.model || "gemini-2.0-flash",
-        systemInstruction: settings.systemInstructions || "you are a flat rental assistant who's job is to gather information from clients to know their rental requirements"
+        systemInstruction: settings.systemInstructions || "You are a flat rental assistant who's job is to gather information from clients to know their rental requirements"
     });
 
     const generationConfig: GenerationConfig = {
