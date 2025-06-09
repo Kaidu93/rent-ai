@@ -4,7 +4,7 @@ import { ChatHistory, ChatSettings } from "@/src/types";
 
 export async function POST(request: Request) {
     try {
-        const { userMessage, history, settings } = await request.json() as {
+        const { userMessage, history, settings } = (await request.json()) as {
             userMessage: string; history: ChatHistory; settings: ChatSettings;
         }
 
