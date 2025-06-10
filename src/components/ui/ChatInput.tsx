@@ -44,7 +44,11 @@ export default function ChatInput({ onSend, onOpenSettings }: ChatInputProps) {
             onKeyDown={handleKeyPress}
           />
           {message && (
-            <button className="absolute right-0 top-1/2 transform-translate-y-1/2 p-1 text-gray-400 hover:text-gray-600">
+            <button
+              className="absolute right-0 top-1/2 transform-translate-y-1/2 p-1 text-gray-400 hover:text-gray-600"
+              onClick={handleClear}
+              aria-label="Clear input"
+            >
               <X size={16} />
             </button>
           )}
