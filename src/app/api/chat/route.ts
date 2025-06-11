@@ -1,14 +1,15 @@
-import { chatToGemini } from "@/src/utils/geminiHelper";
+// import { chatToGemini } from "@/src/utils/geminiHelper";
+import { chatToOpenAI } from "@/src/utils/openaiHelper";
 import { NextResponse } from "next/server";
-import { ChatHistory, ChatSettings } from "@/src/types";
+import { ChatHistory } from "@/src/types";
 
 export async function POST(request: Request) {
     try {
-        const { userMessage, history, settings } = (await request.json()) as {
-            userMessage: string; history: ChatHistory; settings: ChatSettings;
+        const { userMessage, history } = (await request.json()) as {
+            userMessage: string; history: ChatHistory;
         }
 
-        const aiResponse = await chatToGemini(userMessage, history, settings);
+        const aiResponse = await chatToOpenAI(userMessage, history);
         return NextResponse.json({ response: aiResponse });
     } catch (error) {
         console.error(error);
