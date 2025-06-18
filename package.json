@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "langsmith": "^0.3.31",
     "lucide-react": "^0.513.0",
     "next": "15.3.3",
     "react": "^19.0.0",
