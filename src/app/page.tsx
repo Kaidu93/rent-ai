@@ -124,14 +124,50 @@ export default function Home() {
         console.error("AI Error", data.error);
       }
 
+      function extractRawJson(text: string): string {
+        let json = "";
+
+        if (text.trim().startsWith("```")) {
+          json = text.trim().replace(/^```(?:json)?\s*/, "");
+          json = json.replace(/\s*```$/, "");
+        }
+
+        return json;
+      }
+
+      const aiResponse = data.response as string;
+      const jsonResponse = extractRawJson(aiResponse);
       const aiMessage: Message = {
         role: "model" as MessageRole,
-        parts: [{ text: data.response }],
+        parts: [{ text: aiResponse }],
       };
 
       setHistory([...updatedHistory, aiMessage]);
+
+      if (jsonResponse) {
+        try {
+          console.log("JSONRESPONSE: ", jsonResponse)
+          const jsonBlocks = jsonResponse.match(/\{[\s\S]*?\}/g) || [];
+          jsonBlocks.forEach((block) => {
+            const json = JSON.parse(block);
+            const pretty = JSON.stringify(json, null, 2);
+            const blob = new Blob([pretty], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            const type = json.rental_type ?? "unknown";
+            link.download = `${type}_rental_${Date.now()}.json`;
+            link.href = url;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            URL.revokeObjectURL(url);            
+          });
+        } catch (error) {
+          console.error("Failed to save JSON file: ", error);
+        }
+      }
     } catch (error) {
-      console.error("Request Failed", error);
+      console.error("Request Failed: ", error);
     }
   };
 
